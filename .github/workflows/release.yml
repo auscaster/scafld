@@ -113,6 +113,7 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
+      id-token: write # npm trusted publishing
 
     steps:
       - name: Check out repository
@@ -122,7 +123,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 24
-          registry-url: https://registry.npmjs.org
           package-manager-cache: false
 
       - name: Set wrapper version
@@ -134,14 +134,8 @@ jobs:
 
       - name: Publish to npm
         working-directory: package/npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           version="${GITHUB_REF_NAME#v}"
-          if [ -z "${NODE_AUTH_TOKEN:-}" ]; then
-            echo "NPM_TOKEN secret is required to publish to npm" >&2
-            exit 1
-          fi
           if npm view "scafld@$version" version >/dev/null 2>&1; then
             echo "scafld@$version already exists on npm; skipping publish"
             exit 0

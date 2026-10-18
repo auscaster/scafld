@@ -72,9 +72,13 @@ job before building npm and PyPI packages.
 The workflow currently reuses the existing repository secrets:
 
 - `PYPI_API_TOKEN`
-- `NPM_TOKEN`
 - `HOMEBREW_TAP_TOKEN` -- write access to `nilstate/homebrew-tap`
 - `SCOOP_BUCKET_TOKEN` -- write access to `nilstate/scoop-bucket`
+
+npm needs no secret. The `publish-npm` job publishes through npm trusted
+publishing: npm exchanges the job's GitHub OIDC token for a short-lived publish
+credential, and the `scafld` package trusts only `nilstate/scafld`'s
+`release.yml`.
 
 The wrappers are thin launchers. They never reimplement scafld behavior; they
 download the matching native binary and verify it against `checksums.txt`.

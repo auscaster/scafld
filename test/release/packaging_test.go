@@ -407,7 +407,7 @@ func TestReleaseWorkflowPublishesRegistryPackages(t *testing.T) {
 	for _, want := range []string{
 		"softprops/action-gh-release",
 		"PYPI_API_TOKEN",
-		"NPM_TOKEN",
+		"id-token: write # npm trusted publishing",
 		"HOMEBREW_TAP_TOKEN",
 		"SCOOP_BUCKET_TOKEN",
 		"nilstate/homebrew-tap",
@@ -423,6 +423,9 @@ func TestReleaseWorkflowPublishesRegistryPackages(t *testing.T) {
 	}
 	if strings.Contains(text, "PACKAGES_REPO_TOKEN") {
 		t.Fatal("release workflow must use channel-specific package repository credentials")
+	}
+	if strings.Contains(text, "NPM_TOKEN") || strings.Contains(text, "NODE_AUTH_TOKEN") {
+		t.Fatal("release workflow must publish to npm through trusted publishing, not a stored token")
 	}
 	for _, required := range []string{
 		"HOMEBREW_TAP_TOKEN is required to publish nilstate/homebrew-tap.",
