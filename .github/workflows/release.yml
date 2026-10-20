@@ -52,6 +52,14 @@ jobs:
       - name: Smoke package launchers against release snapshot
         run: scripts/smoke-release-installers.sh "${GITHUB_REF_NAME#v}"
 
+      - name: Preserve verified release artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: verified-native-release
+          path: dist/*
+          compression-level: 0
+          retention-days: 7
+
   github-release:
     needs: validate
     runs-on: ubuntu-24.04
@@ -62,13 +70,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
 
-      - name: Set up Go
-        uses: actions/setup-go@v6
+      - name: Restore verified release artifacts
+        uses: actions/download-artifact@v8
         with:
-          go-version-file: go.mod
-
-      - name: Build native release artifacts
-        run: scripts/build-release-artifacts.sh "${GITHUB_REF_NAME#v}"
+          name: verified-native-release
+          path: dist
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v3
