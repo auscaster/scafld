@@ -206,6 +206,12 @@ func TestRunStampsHonestIndependenceReason(t *testing.T) {
 		wantDowngrade string
 	}{
 		{
+			name:     "operator override cannot claim model review",
+			input:    baseInput(),
+			reviewer: receipt.Reviewer{Provider: "human", OverrideReason: "operator waived further review"},
+			want:     []string{"operator override", "no independent model review"},
+		},
+		{
 			name:          "same vendor isolation only",
 			input:         baseInput(),
 			reviewer:      receipt.Reviewer{Provider: "codex"},
@@ -425,5 +431,17 @@ func baseInput() Input {
 		Criteria:        []acceptance.Criterion{{ID: "ac1", Command: "go test ./internal/app/finalize", ExpectedKind: "exit_code_zero"}},
 		PriorLedgerHead: session.LedgerGenesisHead(),
 		MintedAt:        time.Date(2026, 6, 3, 0, 0, 0, 0, time.UTC),
+	}
+}
+
+func TestRunRefusesUnauditedOperatorOverrideBeforeAcceptance(t *testing.T) {
+	runner := passingAcceptance()
+	signer := &fakeSigner{}
+	_, err := Run(context.Background(), baseSnapshotter(), runner, signer, reviewInput(baseInput(), &fakeReviewer{reviewer: receipt.Reviewer{Provider: "human"}}))
+	if err == nil || !strings.Contains(err.Error(), "recorded reason") {
+		t.Fatalf("error=%v", err)
+	}
+	if signer.called != 0 || runner.called != 0 {
+		t.Fatal("unaudited override reached acceptance/signing")
 	}
 }

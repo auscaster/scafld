@@ -11,20 +11,21 @@ import (
 
 // Authority describes the review evidence that authorizes completion.
 type Authority struct {
-	Found         bool
-	Completed     bool
-	Valid         bool
-	HumanReviewed bool
-	Reason        string
-	Actual        string
-	Evidence      []string
-	ReviewEntry   session.Entry
-	ReceiptEntry  session.Entry
-	CompleteEntry session.Entry
-	Dossier       corereview.Dossier
-	HasDossier    bool
-	Receipt       receipt.Envelope
-	HasReceipt    bool
+	Found          bool
+	Completed      bool
+	Valid          bool
+	OverrideReason string
+	HumanReviewed  bool
+	Reason         string
+	Actual         string
+	Evidence       []string
+	ReviewEntry    session.Entry
+	ReceiptEntry   session.Entry
+	CompleteEntry  session.Entry
+	Dossier        corereview.Dossier
+	HasDossier     bool
+	Receipt        receipt.Envelope
+	HasReceipt     bool
 }
 
 // Status returns valid or invalid for display surfaces.
@@ -286,6 +287,7 @@ func validateReviewEntry(ledger session.Session, idx int, entry session.Entry, c
 			auth.Actual = "latest human review has no adjacent review_override entry"
 			return auth
 		}
+		auth.OverrideReason = strings.TrimSpace(ledger.Entries[idx-1].Reason)
 	}
 	auth.Valid = true
 	auth.Reason = "completion authorized by " + auth.Kind()
@@ -353,7 +355,7 @@ func hasAuditedHumanOverride(ledger session.Session, reviewIdx int) bool {
 		return false
 	}
 	previous := ledger.Entries[reviewIdx-1]
-	return previous.Type == "review_override" && previous.Provider == "human" && previous.Status == "accepted"
+	return previous.Type == "review_override" && previous.Provider == "human" && previous.Status == "accepted" && strings.TrimSpace(previous.Reason) != ""
 }
 
 // EntryReference returns a stable human-readable evidence reference.

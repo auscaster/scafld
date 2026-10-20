@@ -833,7 +833,7 @@ func runHumanReviewed(ctx context.Context, specs SpecStore, sessions SessionStor
 	model.Review.Mode = review.ModeVerify
 	model.Review.Summary = "Human-reviewed override accepted: " + reason
 	model.Review.Findings = nil
-	model.Review.AttackLog = []review.AttackLogEntry{{Target: "review gate", Attack: "manual human audit", Result: review.AttackResultClean, Notes: reason}}
+	model.Review.AttackLog = []review.AttackLogEntry{{Target: "review gate", Attack: "explicit operator decision", Result: review.AttackResultClean, Notes: reason}}
 	model.Review.Budget = review.Budget{ActualAttackAngles: 1, Depth: "human"}
 	model.CurrentState.ReviewGate = review.VerdictPass
 	model.CurrentState.Next = "finalize"

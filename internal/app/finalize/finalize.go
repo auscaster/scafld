@@ -114,6 +114,9 @@ func Run(ctx context.Context, snapshotter Snapshotter, acceptanceRunner Acceptan
 	if !review.ValidCompletionProvider(input.Review.Reviewer.Provider) {
 		return Output{}, fmt.Errorf("accepted review evidence has unsupported provider %q", input.Review.Reviewer.Provider)
 	}
+	if err := input.Review.Reviewer.ValidateOverride(); err != nil {
+		return Output{}, err
+	}
 	selectedIndependence := completeIndependence(input.Independence, input.Review.Reviewer.Provider, input.HostUnderReview.Agent)
 	snap, err := snapshotter.Snapshot(ctx, SnapshotInput{Scope: input.Scope, BaseRef: input.BaseRef})
 	if err != nil {
@@ -306,72 +309,8 @@ func snapshotMode(baseRef string) string {
 	return receipt.SnapshotModeWorkingTree
 }
 
-func completeIndependence(ind receipt.Independence, reviewerProvider string, hostAgent string) receipt.Independence {
-	// Fully re-derive the signed level and distinctness from the reviewer that
-	// actually ran versus the detected host, never trusting the passed-in level.
-	// cross_vendor is stamped only when separation is genuinely proven, so neither a
-	// forged cross_vendor input nor a stale isolation_only input can survive.
-	if crossVendorProven(reviewerProvider, hostAgent) {
-		ind.Level = receipt.IndependenceLevelCrossVendor
-		ind.Distinct = true
-	} else {
-		ind.Level = receipt.IndependenceLevelIsolationOnly
-		ind.Distinct = false
-	}
-	ind.Downgraded = independenceDowngrade(ind, reviewerProvider, hostAgent)
-	ind.Reason = independenceReason(ind, reviewerProvider, hostAgent)
-	return ind
-}
-
-// crossVendorProven reports whether the reviewer and host are both known and from
-// different vendors, the only case in which cross_vendor independence is real.
-func crossVendorProven(reviewerProvider, hostAgent string) bool {
-	reviewerProvider = strings.TrimSpace(reviewerProvider)
-	hostAgent = strings.TrimSpace(hostAgent)
-	if reviewerProvider == "" || strings.EqualFold(reviewerProvider, "unknown") {
-		return false
-	}
-	if hostAgent == "" || strings.EqualFold(hostAgent, "unknown") {
-		return false
-	}
-	return !strings.EqualFold(reviewerProvider, hostAgent)
-}
-
-func independenceDowngrade(ind receipt.Independence, reviewerProvider string, hostAgent string) string {
-	if ind.Level == receipt.IndependenceLevelCrossVendor {
-		return ""
-	}
-	reviewerProvider = strings.TrimSpace(reviewerProvider)
-	hostAgent = strings.TrimSpace(hostAgent)
-	if reviewerProvider == "" || strings.EqualFold(reviewerProvider, "unknown") {
-		return receipt.IndependenceDowngradeUnknownReviewer
-	}
-	if hostAgent == "" || strings.EqualFold(hostAgent, "unknown") {
-		return receipt.IndependenceDowngradeUnknownHost
-	}
-	if strings.EqualFold(reviewerProvider, hostAgent) {
-		return receipt.IndependenceDowngradeSameVendor
-	}
-	return ""
-}
-
-func independenceReason(ind receipt.Independence, reviewerProvider string, hostAgent string) string {
-	reviewerProvider = strings.TrimSpace(reviewerProvider)
-	hostAgent = strings.TrimSpace(hostAgent)
-	switch ind.Level {
-	case receipt.IndependenceLevelCrossVendor:
-		return fmt.Sprintf("cross_vendor: reviewer %q and host %q are different model vendors; this is multi-model review that reduces correlated blind spots but remains single-party local tooling", reviewerProvider, hostAgent)
-	case receipt.IndependenceLevelIsolationOnly:
-		if hostAgent == "" || strings.EqualFold(hostAgent, "unknown") {
-			return fmt.Sprintf("isolation_only: reviewer %q ran in an isolated path, but the host vendor was not detected so cross_vendor separation is not proven", reviewerProvider)
-		}
-		if strings.EqualFold(reviewerProvider, hostAgent) {
-			return fmt.Sprintf("isolation_only: reviewer %q matches host %q; the review is isolated but same-vendor, so correlated blind spots remain possible", reviewerProvider, hostAgent)
-		}
-		return fmt.Sprintf("isolation_only: reviewer %q ran separately from host %q, but cross_vendor separation is not proven", reviewerProvider, hostAgent)
-	default:
-		return fmt.Sprintf("unrecognized independence level %q; verify policy remains authoritative", ind.Level)
-	}
+func completeIndependence(_ receipt.Independence, reviewerProvider string, hostAgent string) receipt.Independence {
+	return receipt.ClassifyIndependence(reviewerProvider, hostAgent)
 }
 
 func receiptAcceptance(results []acceptance.CriterionResult) []receipt.Acceptance {

@@ -24,6 +24,8 @@ const (
 	IndependenceLevelIsolationOnly = "isolation_only"
 	// IndependenceLevelCrossVendor records proven different model-vendor review.
 	IndependenceLevelCrossVendor = "cross_vendor"
+	// IndependenceLevelHumanOverride records explicit operator authority, not model review.
+	IndependenceLevelHumanOverride = "human_override"
 	// IndependenceDowngradeSameVendor records same-vendor isolation-only review.
 	IndependenceDowngradeSameVendor = "same_vendor"
 	// IndependenceDowngradeUnknownHost records missing host-vendor detection.
@@ -69,10 +71,23 @@ type Provenance struct {
 
 // Reviewer records the independent reviewer runtime stamped into the receipt.
 type Reviewer struct {
-	Provider     string `json:"provider"`
-	Model        string `json:"model,omitempty"`
-	BinarySHA256 string `json:"binary_sha256,omitempty"`
-	EndpointHost string `json:"endpoint_host,omitempty"`
+	Provider       string `json:"provider"`
+	OverrideReason string `json:"override_reason,omitempty"`
+	Model          string `json:"model,omitempty"`
+	BinarySHA256   string `json:"binary_sha256,omitempty"`
+	EndpointHost   string `json:"endpoint_host,omitempty"`
+}
+
+// ValidateOverride requires the operator decision to accompany human authority.
+func (r Reviewer) ValidateOverride() error {
+	if strings.TrimSpace(r.Provider) == "human" {
+		if strings.TrimSpace(r.OverrideReason) == "" {
+			return errors.New("operator override requires its recorded reason")
+		}
+	} else if r.OverrideReason != "" {
+		return errors.New("operator override reason requires human authority")
+	}
+	return nil
 }
 
 // HostUnderReview identifies the host agent whose work is being gated.

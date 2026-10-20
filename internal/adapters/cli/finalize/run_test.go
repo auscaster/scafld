@@ -333,7 +333,7 @@ func writeFinalizeReadyTask(t *testing.T, taskID string) string {
 		t.Fatal(err)
 	}
 	ledger := session.New(model.TaskID, "now").
-		WithEntry(session.Entry{Type: "review_override", Status: "accepted", Provider: "human"}).
+		WithEntry(session.Entry{Type: "review_override", Status: "accepted", Provider: "human", Reason: "operator reviewed the acceptance evidence"}).
 		WithEntry(session.Entry{Type: "review", Status: review.VerdictPass, Provider: "human"})
 	if err := (jsonstore.SessionStore{Root: root}).Save(context.Background(), ledger); err != nil {
 		t.Fatal(err)

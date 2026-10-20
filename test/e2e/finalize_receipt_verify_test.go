@@ -29,6 +29,15 @@ import (
 // re-runs acceptance, and checks the signature. A post-mint tree change must
 // flip verify to fail. This is the wired-path coverage the original stub lacked.
 func TestFinalizeMintsReceiptVerifyAcceptsAndRejectsTamper(t *testing.T) {
+	for _, reviewer := range []receipt.Reviewer{
+		{Provider: "codex"},
+		{Provider: "human", OverrideReason: "operator waived additional provider review after checking test evidence"},
+	} {
+		t.Run(reviewer.Provider, func(t *testing.T) { testFinalizeVerify(t, reviewer) })
+	}
+}
+
+func testFinalizeVerify(t *testing.T, reviewer receipt.Reviewer) {
 	root := initRepo(t)
 	writeFile(t, root, "file.txt", "v2\n")
 
@@ -47,7 +56,7 @@ func TestFinalizeMintsReceiptVerifyAcceptsAndRejectsTamper(t *testing.T) {
 		SessionID:       "demo",
 		Scope:           []string{"file.txt"},
 		SpecFingerprint: "spec",
-		Review:          appfinalize.ReviewEvidence{Dossier: review.Dossier{Verdict: review.VerdictPass}, Provenance: provenance, Reviewer: receipt.Reviewer{Provider: "codex"}},
+		Review:          appfinalize.ReviewEvidence{Dossier: review.Dossier{Verdict: review.VerdictPass}, Provenance: provenance, Reviewer: reviewer},
 		HostUnderReview: receipt.HostUnderReview{Agent: "unknown"},
 		Independence:    receipt.Independence{Level: receipt.IndependenceLevelIsolationOnly, Distinct: false},
 		Criteria:        []appacceptance.Criterion{{ID: "ac1", Command: "true", ExpectedKind: "exit_code_zero"}},
@@ -83,6 +92,21 @@ func TestFinalizeMintsReceiptVerifyAcceptsAndRejectsTamper(t *testing.T) {
 	}
 	if !res.Passed {
 		t.Fatalf("verify rejected an honest receipt: %s", res.Reason)
+	}
+
+	if reviewer.Provider == "human" {
+		if got := out.Receipt.Body.Independence; got.Level != receipt.IndependenceLevelHumanOverride || got.Distinct {
+			t.Fatalf("operator override misrepresented: %+v", got)
+		}
+		tamperedReason := *out.Receipt
+		tamperedReason.Body.Reviewer.OverrideReason = "invented approval"
+		got, err := appverify.Run(context.Background(), tamperedReason, trusted, appverify.Policy{}, ports)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if got.Passed || !strings.Contains(got.Reason, "signature verification failed") {
+			t.Fatalf("edited operator authority accepted: %+v", got)
+		}
 	}
 
 	// Tamper the working tree after minting: verify must fail closed on the
