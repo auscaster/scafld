@@ -362,6 +362,16 @@ Use `--human-reviewed` only when the provider review is blocked for an external
 reason and a human has actually reviewed the diff, spec, acceptance evidence,
 and scope. It is an audited escape hatch, not a softer review mode.
 
+An operator can also explicitly waive further provider review. Record that
+decision and its scope in the required reason; do not describe a waiver as a
+personal code audit. The session's existing `review_override` event owns that
+decision. Finalization carries its reason into the signed reviewer evidence;
+the receipt owns the `human_override` classification. Verification accepts that
+explicit authority while retaining signature, source, ancestry, mutation and
+acceptance checks. An override does not satisfy an explicit `cross_vendor`
+minimum and never claims model-vendor independence. Arbitrary command providers
+remain ineligible for CI verification.
+
 ## Challenger Stance
 
 A useful adversarial review:

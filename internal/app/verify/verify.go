@@ -103,7 +103,10 @@ func Run(ctx context.Context, envelope receipt.Envelope, trusted trust.TrustedKe
 		return fail("mutation_guard is dirty"), nil
 	}
 	if providerRejected(body.Reviewer.Provider) {
-		return fail("command/human providers are rejected"), nil
+		return fail("unsupported review provider"), nil
+	}
+	if err := body.Reviewer.ValidateOverride(); err != nil {
+		return fail(err.Error()), nil
 	}
 	if ok, reason := meetsIndependence(body.Independence, body.Reviewer.Provider, body.HostUnderReview.Agent, policy.MinIndependence); !ok {
 		return fail(reason), nil
@@ -208,7 +211,7 @@ func requirePorts(ports Ports, materialOnly bool) error {
 
 func providerRejected(provider string) bool {
 	switch strings.TrimSpace(provider) {
-	case "command", "human":
+	case "command":
 		return true
 	default:
 		return !review.ValidCompletionProvider(provider)
@@ -221,19 +224,15 @@ func providerRejected(provider string) bool {
 // must agree with the re-derivation, and a cross_vendor policy requires two
 // known, distinct vendors.
 func meetsIndependence(ind receipt.Independence, reviewer, host, minimum string) (bool, string) {
-	reviewerVendor := normalizeVendor(reviewer)
-	hostVendor := normalizeVendor(host)
-	distinct := reviewerVendor != "" && hostVendor != "" && reviewerVendor != hostVendor
-	level := receipt.IndependenceLevelIsolationOnly
-	if distinct {
-		level = receipt.IndependenceLevelCrossVendor
-	}
-	if ind.Level != level || ind.Distinct != distinct {
+	expected := receipt.ClassifyIndependence(reviewer, host)
+	level := expected.Level
+	if ind.Level != level || ind.Distinct != expected.Distinct {
 		return false, "independence claim does not match reviewer and host vendors"
 	}
-	if ind.Downgraded != expectedIndependenceDowngrade(level, reviewerVendor, hostVendor) {
+	if ind.Downgraded != expected.Downgraded {
 		return false, "independence downgrade does not match reviewer and host vendors"
 	}
+
 	switch strings.TrimSpace(minimum) {
 	case "", receipt.IndependenceLevelIsolationOnly:
 		return true, ""
@@ -245,33 +244,6 @@ func meetsIndependence(ind receipt.Independence, reviewer, host, minimum string)
 	default:
 		return false, "unknown min_independence policy"
 	}
-}
-
-func expectedIndependenceDowngrade(level string, reviewerVendor string, hostVendor string) string {
-	if level == receipt.IndependenceLevelCrossVendor {
-		return ""
-	}
-	if reviewerVendor == "" {
-		return receipt.IndependenceDowngradeUnknownReviewer
-	}
-	if hostVendor == "" {
-		return receipt.IndependenceDowngradeUnknownHost
-	}
-	if reviewerVendor == hostVendor {
-		return receipt.IndependenceDowngradeSameVendor
-	}
-	return ""
-}
-
-// normalizeVendor lowercases a vendor and folds the "unknown" sentinel (recorded
-// when the gate cannot detect the host from environment markers) to the empty
-// vendor, so an undetected host is never treated as distinct from the reviewer.
-func normalizeVendor(value string) string {
-	value = strings.ToLower(strings.TrimSpace(value))
-	if value == "unknown" {
-		return ""
-	}
-	return value
 }
 
 func missingPaths(expected map[string]string, observed map[string]string) []string {

@@ -166,11 +166,11 @@ func TestRunReportsInvariantFailures(t *testing.T) {
 		{name: "command provider", body: func(b receipt.Body) receipt.Body {
 			b.Reviewer.Provider = "command"
 			return b
-		}, want: "command/human"},
+		}, want: "unsupported review provider"},
 		{name: "human provider", body: func(b receipt.Body) receipt.Body {
 			b.Reviewer.Provider = "human"
 			return b
-		}, want: "command/human"},
+		}, want: "operator override requires its recorded reason"},
 		{name: "acceptance mismatch", ports: func() Ports {
 			p := validPorts()
 			p.AcceptanceRunner = fakeAcceptance{results: []AcceptanceResult{{ID: "ac1", Status: "fail", ExitCode: 1}}}
@@ -418,5 +418,56 @@ func validEnvelope() receipt.Envelope {
 			MintedAt:                  "2026-06-03T00:00:00Z",
 		},
 		Signature: receipt.DetachedSignature{Alg: receipt.SignatureAlgorithm, KeyID: "key", Sig: "sig"},
+	}
+}
+
+func TestRunVerifiesAuditedOperatorOverrideWithoutWeakeningOtherChecks(t *testing.T) {
+	t.Parallel()
+	for _, tc := range []struct {
+		name   string
+		mutate func(*receipt.Envelope, *Ports, *Policy)
+		want   string
+	}{
+		{name: "explicit override"},
+		{name: "missing reason", mutate: func(e *receipt.Envelope, _ *Ports, _ *Policy) { e.Body.Reviewer.OverrideReason = "  " }, want: "recorded reason"},
+		{name: "operator reason on model provider", mutate: func(e *receipt.Envelope, _ *Ports, _ *Policy) { e.Body.Reviewer.Provider = "codex" }, want: "requires human authority"},
+		{name: "forged cross vendor", mutate: func(e *receipt.Envelope, _ *Ports, _ *Policy) {
+			e.Body.Independence = receipt.Independence{Level: receipt.IndependenceLevelCrossVendor, Distinct: true}
+		}, want: "does not match"},
+		{name: "required cross vendor", mutate: func(_ *receipt.Envelope, _ *Ports, p *Policy) {
+			p.MinIndependence = receipt.IndependenceLevelCrossVendor
+		}, want: "below minimum"},
+		{name: "invalid signature", mutate: func(_ *receipt.Envelope, p *Ports, _ *Policy) {
+			p.SignatureVerifier = fakeSignature{err: errors.New("untrusted signature")}
+		}, want: "signature verification failed"},
+		{name: "changed source", mutate: func(_ *receipt.Envelope, p *Ports, _ *Policy) {
+			p.Snapshotter = fakeSnapshotter{snapshot: Snapshot{BaseCommit: "base", FileDigests: map[string]string{"a.go": "changed"}}}
+		}, want: "file digest mismatch"},
+		{name: "wrong ancestry", mutate: func(_ *receipt.Envelope, p *Ports, _ *Policy) { p.AncestryChecker = fakeAncestry{ok: false} }, want: "not ancestor"},
+		{name: "failed acceptance", mutate: func(_ *receipt.Envelope, p *Ports, _ *Policy) {
+			p.AcceptanceRunner = fakeAcceptance{results: []AcceptanceResult{{ID: "ac1", Status: "fail", ExitCode: 1}}}
+		}, want: "acceptance mismatch"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			e := validEnvelope()
+			e.Body.Reviewer = receipt.Reviewer{Provider: "human", OverrideReason: "operator explicitly waived another review cycle"}
+			e.Body.Independence = receipt.ClassifyIndependence("human", e.Body.HostUnderReview.Agent)
+			ports := validPorts()
+			policy := Policy{CI: true, TargetCommit: "main"}
+			if tc.mutate != nil {
+				tc.mutate(&e, &ports, &policy)
+			}
+			got, err := Run(context.Background(), e, trust.TrustedKeys{Version: trust.TrustedKeysVersion}, policy, ports)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if tc.want == "" {
+				if !got.Passed {
+					t.Fatalf("explicit override rejected: %+v", got)
+				}
+			} else if got.Passed || !strings.Contains(got.Reason, tc.want) {
+				t.Fatalf("result=%+v; want %q", got, tc.want)
+			}
+		})
 	}
 }

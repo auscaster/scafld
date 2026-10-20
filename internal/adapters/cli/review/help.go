@@ -82,7 +82,7 @@ Cost control:
     scafld review email-contracts --review-depth light --max-findings 4 --min-attack-angles 3
 
 Human review:
-  Use --human-reviewed only after operator review; --reason records the audit reason:
+  Use --human-reviewed for explicit operator review or a waiver; --reason records that decision:
     scafld review email-contracts --human-reviewed --reason "reviewed PR 123"
 `)
 }

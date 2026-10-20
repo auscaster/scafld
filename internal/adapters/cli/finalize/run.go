@@ -252,8 +252,9 @@ func compose(ctx context.Context, req Request) (map[string]any, error) {
 			Provenance: provenance,
 			Ignored:    ignored,
 			Reviewer: receipt.Reviewer{
-				Provider: authority.ReviewEntry.Provider,
-				Model:    authority.ReviewEntry.ProviderModel,
+				Provider:       authority.ReviewEntry.Provider,
+				OverrideReason: authority.OverrideReason,
+				Model:          authority.ReviewEntry.ProviderModel,
 			},
 		},
 		SpecFingerprint: specFingerprint(model, scope),

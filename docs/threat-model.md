@@ -14,6 +14,7 @@ key. The signed body includes:
   unreviewed paths
 - reviewer identity, host identity, independence classification, and downgrade
   reason when independence is below cross-vendor
+- the operator's recorded reason when provider review is explicitly overridden
 - acceptance commands and observed results
 - open blockers, mutation guard state, ledger head, and minted time
 
@@ -65,6 +66,13 @@ operators can see local hygiene issues before relying on receipts.
 `cross_vendor` means scafld could derive distinct known model vendors for the
 host and reviewer. `isolation_only` means the reviewer was isolated from the
 host process, but distinct vendors were not established.
+
+`human_override` records an explicit operator decision instead of model review.
+Its signed reviewer evidence requires the recorded override reason. It is
+accepted by the default verify policy, while an explicit `cross_vendor` minimum
+still requires distinct model vendors. The same signature, material, ancestry
+and acceptance checks apply; a waiver cannot turn changed source or failed
+commands into a passing verification.
 
 Independence detection is not organizational proof. It does not prove legal
 separation, employment separation, account separation, or that a provider's

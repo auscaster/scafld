@@ -48,7 +48,7 @@ func TestReadyForFinalizeRequiresPassingReviewEvidence(t *testing.T) {
 	t.Parallel()
 
 	passing := session.New("ready", "now").
-		WithEntry(session.Entry{Type: "review_override", Status: "accepted", Provider: "human"}).
+		WithEntry(session.Entry{Type: "review_override", Status: "accepted", Provider: "human", Reason: "operator reviewed the acceptance evidence"}).
 		WithEntry(session.Entry{Type: "review", Status: "pass", Provider: "human"})
 	failing := session.New("blocked", "now").WithEntry(session.Entry{Type: "review", Status: "fail", Provider: "codex"})
 	got, err := ReadyForFinalize(context.Background(), fakeSpecs{records: []spec.Record{

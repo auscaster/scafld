@@ -933,6 +933,10 @@ func TestRunReviewHumanReviewedOverrideCompletes(t *testing.T) {
 	root := t.TempDir()
 	initGitWorkspace(t, root)
 	runCLI(t, []string{"init", "--root", root, "--no-agent-docs"})
+	cmd := exec.Command("git", "-C", root, "-c", "user.name=Test", "-c", "user.email=test@example.com", "commit", "--allow-empty", "-m", "test: initialize source")
+	if data, err := cmd.CombinedOutput(); err != nil {
+		t.Fatalf("initial commit: %v: %s", err, data)
+	}
 	runCLI(t, []string{"plan", "--root", root, "human-review-task", "--command", "true"})
 	runCLI(t, []string{"approve", "--root", root, "human-review-task"})
 	runCLI(t, []string{"build", "--root", root, "human-review-task"})
@@ -941,7 +945,34 @@ func TestRunReviewHumanReviewedOverrideCompletes(t *testing.T) {
 	if !strings.Contains(stdout, "review verdict: pass") || !strings.Contains(stdout, "next: scafld finalize human-review-task") {
 		t.Fatalf("human review output = %q", stdout)
 	}
-	runCLI(t, []string{"complete", "--root", root, "human-review-task"})
+	if err := os.WriteFile(filepath.Join(root, "owned.txt"), []byte("owned source"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	runCLI(t, []string{"finalize", "--root", root, "human-review-task", "--scope-hint", "owned.txt"})
+	receiptPath := filepath.Join(root, ".scafld", "receipts", "human-review-task.json")
+	receiptBytes, err := os.ReadFile(receiptPath)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var recorded struct {
+		Body struct {
+			Reviewer struct {
+				Provider string `json:"provider"`
+				Reason   string `json:"override_reason"`
+			} `json:"reviewer"`
+			Independence struct {
+				Level    string `json:"level"`
+				Distinct bool   `json:"distinct"`
+			} `json:"independence"`
+		} `json:"body"`
+	}
+	if err := json.Unmarshal(receiptBytes, &recorded); err != nil {
+		t.Fatal(err)
+	}
+	if recorded.Body.Reviewer.Provider != "human" || recorded.Body.Reviewer.Reason != "operator reviewed PR 123" || recorded.Body.Independence.Level != "human_override" || recorded.Body.Independence.Distinct {
+		t.Fatalf("incorrect operator evidence: %+v", recorded)
+	}
+
 	sessionPath := filepath.Join(root, ".scafld", "runs", "human-review-task", "session.json")
 	sessionData, err := os.ReadFile(sessionPath)
 	if err != nil {
