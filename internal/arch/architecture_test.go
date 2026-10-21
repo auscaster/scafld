@@ -135,6 +135,16 @@ func TestCLIIsThin(t *testing.T) {
 		if err != nil {
 			return err
 		}
+		// A doc.go that declares nothing holds only the package comment, not a handler.
+		if filepath.Base(path) == "doc.go" {
+			file, err := parser.ParseFile(token.NewFileSet(), path, data, 0)
+			if err != nil {
+				return err
+			}
+			if len(file.Decls) == 0 {
+				return nil
+			}
+		}
 		total += bytes.Count(data, []byte("\n"))
 		return nil
 	})
