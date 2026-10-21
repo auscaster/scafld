@@ -2,6 +2,8 @@ import { defineConfig, godoc, markdown } from "sourcey";
 
 export default defineConfig({
   name: "scafld",
+  siteUrl: "https://0state.com",
+  baseUrl: "/scafld/docs",
   prettyUrls: "strip",
   repo: "https://github.com/nilstate/scafld",
   editBranch: "main",
