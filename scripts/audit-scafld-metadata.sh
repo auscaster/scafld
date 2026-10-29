@@ -16,7 +16,7 @@ root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 tag="v${version}"
 module="github.com/nilstate/scafld/v2"
 cmd_pkg="${module}/cmd/scafld"
-canonical="https://0state.com/scafld"
+canonical="https://auscaster.com/scafld"
 
 failures=0
 warnings=0
@@ -216,7 +216,7 @@ check_pypi() {
 
 check_homebrew() {
   local url
-  url="https://api.github.com/repos/nilstate/homebrew-tap/contents/Formula/scafld.rb?ref=main"
+  url="https://api.github.com/repos/auscaster/homebrew-tap/contents/Formula/scafld.rb?ref=main"
   check_url_contains "Homebrew" "$url" "version \"${version}\""
   check_url_contains "Homebrew" "$url" "homepage \"${canonical}\""
 }
@@ -226,7 +226,7 @@ check_scoop() {
     return
   fi
   local url json homepage live_version
-  url="https://api.github.com/repos/nilstate/scoop-bucket/contents/bucket/scafld.json?ref=main"
+  url="https://api.github.com/repos/auscaster/scoop-bucket/contents/bucket/scafld.json?ref=main"
   json="$(fetch_body "$url")"
   if [[ $? -ne 0 ]]; then
     record FAIL "Scoop" "$url could not be fetched"
@@ -263,15 +263,15 @@ check_winget() {
 
 check_ghcr() {
   if ! command -v docker >/dev/null 2>&1; then
-    record WARN "GHCR" "docker not found; cannot inspect ghcr.io/nilstate/scafld:${tag}"
+    record WARN "GHCR" "docker not found; cannot inspect ghcr.io/auscaster/scafld:${tag}"
     return
   fi
   local out
-  out="$(docker manifest inspect "ghcr.io/nilstate/scafld:${tag}" 2>&1 >/dev/null)"
+  out="$(docker manifest inspect "ghcr.io/auscaster/scafld:${tag}" 2>&1 >/dev/null)"
   if [[ $? -eq 0 ]]; then
-    record PASS "GHCR" "ghcr.io/nilstate/scafld:${tag} is inspectable"
+    record PASS "GHCR" "ghcr.io/auscaster/scafld:${tag} is inspectable"
   else
-    record FAIL "GHCR" "ghcr.io/nilstate/scafld:${tag} is not publicly inspectable: $out"
+    record FAIL "GHCR" "ghcr.io/auscaster/scafld:${tag} is not publicly inspectable: $out"
   fi
 }
 
@@ -284,7 +284,7 @@ check_github_repo() {
     return
   fi
   local json homepage description
-  json="$(gh repo view nilstate/scafld --json homepageUrl,description 2>/dev/null)"
+  json="$(gh repo view auscaster/scafld --json homepageUrl,description 2>/dev/null)"
   if [[ $? -ne 0 ]]; then
     record WARN "GitHub repo" "gh repo view failed"
     return

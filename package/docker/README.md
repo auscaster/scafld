@@ -6,9 +6,9 @@ separate runtime.
 
 Target image names:
 
-- `ghcr.io/nilstate/scafld:vX.Y.Z`
-- `ghcr.io/nilstate/scafld:latest`
+- `ghcr.io/auscaster/scafld:vX.Y.Z`
+- `ghcr.io/auscaster/scafld:latest`
 
 The Dockerfile carries OCI metadata labels so GHCR can connect the image to
-`github.com/nilstate/scafld` and display the canonical project description and
+`github.com/auscaster/scafld` and display the canonical project description and
 license.

@@ -9,7 +9,7 @@ description = "Deterministic protocol for multi-phase agent work."
 readme = "README.md"
 requires-python = ">=3.9"
 license = "MIT"
-authors = [{ name = "0state" }]
+authors = [{ name = "auscaster" }]
 keywords = ["cli", "go", "markdown", "agents", "workflow"]
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -22,10 +22,10 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://0state.com/scafld"
-Documentation = "https://0state.com/scafld/docs"
-Repository = "https://github.com/nilstate/scafld"
-Issues = "https://github.com/nilstate/scafld/issues"
+Homepage = "https://auscaster.com/scafld"
+Documentation = "https://auscaster.com/scafld/docs"
+Repository = "https://github.com/auscaster/scafld"
+Issues = "https://github.com/auscaster/scafld/issues"
 
 [project.scripts]
 scafld = "scafld_launcher.cli:main"

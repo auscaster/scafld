@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 set -eu
 
-REPO="${SCAFLD_GITHUB_REPOSITORY:-nilstate/scafld}"
+REPO="${SCAFLD_GITHUB_REPOSITORY:-auscaster/scafld}"
 VERSION="${VERSION:-}"
 BIN_DIR="${BIN_DIR:-$HOME/.local/bin}"
 

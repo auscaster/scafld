@@ -4,7 +4,7 @@ This is a maintainer doc. Most contributors do not need it.
 
 ## Identity
 
-The primary repository is `github.com/nilstate/scafld`. The Go module path is
+The primary repository is `github.com/auscaster/scafld`. The Go module path is
 `github.com/nilstate/scafld/v2` because the product release line is already v2.
 
 Release tags are `vX.Y.Z`. The source tree keeps wrapper package metadata at
@@ -17,9 +17,10 @@ from the tag.
 
 Stages:
 
-1. **validate** -- run `make check` and build a release snapshot.
-2. **github-release** -- build native Go binaries, `checksums.txt`, and
-   `manifest.json`, then create the GitHub release.
+1. **validate** -- run `make check`, build the native binaries, `checksums.txt`,
+   and `manifest.json`, and smoke-test the installers against that snapshot.
+2. **github-release** -- restore those verified artifacts and create the GitHub
+   release without rebuilding them.
 3. **publish-pypi** -- build and publish the PyPI launcher wrapper.
 4. **publish-npm** -- publish the npm launcher wrapper.
 5. **package-managers** -- render Homebrew, Scoop, WinGet, and OCI manifests
@@ -69,16 +70,20 @@ job before building npm and PyPI packages.
 
 ## Registry Publishing
 
-The workflow currently reuses the existing repository secrets:
+The package-manager writers use repository secrets for their owning channels:
 
-- `PYPI_API_TOKEN`
-- `HOMEBREW_TAP_TOKEN` -- write access to `nilstate/homebrew-tap`
-- `SCOOP_BUCKET_TOKEN` -- write access to `nilstate/scoop-bucket`
+- `HOMEBREW_TAP_TOKEN` -- write access to `auscaster/homebrew-tap`
+- `SCOOP_BUCKET_TOKEN` -- write access to `auscaster/scoop-bucket`
 
-npm needs no secret. The `publish-npm` job publishes through npm trusted
-publishing: npm exchanges the job's GitHub OIDC token for a short-lived publish
-credential, and the `scafld` package trusts only `nilstate/scafld`'s
-`release.yml`.
+npm and PyPI use repository-bound trusted publishing. Each registry exchanges
+the job's GitHub OIDC token for a short-lived publish credential. The persistent
+trust names `auscaster/scafld` and `release.yml`, with no environment name.
+
+Validate a new binding through the same authorized release that changes package
+bytes, then read its status back from the registry. A pending or expired
+configuration is unfinished work. Complete validation before the registry's
+activation deadline and retire the old binding after the replacement is valid.
+Do not publish unchanged bytes or churn versions merely to activate a binding.
 
 The wrappers are thin launchers. They never reimplement scafld behavior; they
 download the matching native binary and verify it against `checksums.txt`.
@@ -87,7 +92,7 @@ download the matching native binary and verify it against `checksums.txt`.
 
 ```bash
 git add -A
-git commit -m "release: vX.Y.Z"
+git commit -m "chore(release): prepare distribution"
 git tag vX.Y.Z
 git push origin main vX.Y.Z
 ```
@@ -99,7 +104,7 @@ Watch the Actions tab. Verify:
 - `npm install -g scafld@X.Y.Z` works.
 - `pipx install scafld==X.Y.Z` works.
 - `go install github.com/nilstate/scafld/v2/cmd/scafld@vX.Y.Z` works.
-- `docker manifest inspect ghcr.io/nilstate/scafld:vX.Y.Z` works without
+- `docker manifest inspect ghcr.io/auscaster/scafld:vX.Y.Z` works without
   authenticated package access.
 
 ## External Registry Follow-Up
@@ -108,12 +113,12 @@ After the GitHub release is live, verify the synchronous channels and submit
 the asynchronous manifest:
 
 - Homebrew and Scoop are synchronous release channels. The release workflow
-  updates `nilstate/homebrew-tap` and `nilstate/scoop-bucket`; a skipped job is
+  updates `auscaster/homebrew-tap` and `auscaster/scoop-bucket`; a skipped job is
   a failed release condition, not a successful partial release.
 - WinGet: submit `0state.scafld` manifests to `microsoft/winget-pkgs`.
 - GHCR: confirm the published image is publicly inspectable. If anonymous
-  `docker manifest inspect ghcr.io/nilstate/scafld:vX.Y.Z` returns `denied`,
-  make the `nilstate/scafld` container package public in GitHub Packages and
+  `docker manifest inspect ghcr.io/auscaster/scafld:vX.Y.Z` returns `denied`,
+  make the `auscaster/scafld` container package public in GitHub Packages and
   rerun the metadata audit.
 
 For WinGet, do not copy from a local `.stage/` directory. Stage the upstream

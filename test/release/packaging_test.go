@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func TestModulePathIsPrimaryRepository(t *testing.T) {
+func TestModulePathRemainsStableAfterRepositoryTransfer(t *testing.T) {
 	t.Parallel()
 	data, err := os.ReadFile(filepath.Join("..", "..", "go.mod"))
 	if err != nil {
@@ -41,7 +41,7 @@ func TestNpmPackageIsThinCliWrapper(t *testing.T) {
 	if pkg.Name != "scafld" || pkg.Bin["scafld"] != "bin/scafld.js" {
 		t.Fatalf("unexpected npm package shape: %+v", pkg)
 	}
-	if !strings.Contains(pkg.Repository.URL, "github.com/nilstate/scafld") {
+	if !strings.Contains(pkg.Repository.URL, "github.com/auscaster/scafld") {
 		t.Fatalf("repository must point at primary repo: %s", pkg.Repository.URL)
 	}
 }
@@ -56,7 +56,7 @@ func TestPyPIPackageIsThinCliWrapper(t *testing.T) {
 	for _, want := range []string{
 		`name = "scafld"`,
 		`scafld = "scafld_launcher.cli:main"`,
-		`Repository = "https://github.com/nilstate/scafld"`,
+		`Repository = "https://github.com/auscaster/scafld"`,
 	} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("pyproject missing %q:\n%s", want, text)
@@ -406,12 +406,12 @@ func TestReleaseWorkflowPublishesRegistryPackages(t *testing.T) {
 	text := string(data)
 	for _, want := range []string{
 		"softprops/action-gh-release",
-		"PYPI_API_TOKEN",
+		"id-token: write # PyPI trusted publishing",
 		"id-token: write # npm trusted publishing",
 		"HOMEBREW_TAP_TOKEN",
 		"SCOOP_BUCKET_TOKEN",
-		"nilstate/homebrew-tap",
-		"nilstate/scoop-bucket",
+		"auscaster/homebrew-tap",
+		"auscaster/scoop-bucket",
 		"npm publish --access public",
 		"pypa/gh-action-pypi-publish",
 		"scripts/build-release-artifacts.sh",
@@ -424,12 +424,12 @@ func TestReleaseWorkflowPublishesRegistryPackages(t *testing.T) {
 	if strings.Contains(text, "PACKAGES_REPO_TOKEN") {
 		t.Fatal("release workflow must use channel-specific package repository credentials")
 	}
-	if strings.Contains(text, "NPM_TOKEN") || strings.Contains(text, "NODE_AUTH_TOKEN") {
-		t.Fatal("release workflow must publish to npm through trusted publishing, not a stored token")
+	if strings.Contains(text, "NPM_TOKEN") || strings.Contains(text, "NODE_AUTH_TOKEN") || strings.Contains(text, "PYPI_API_TOKEN") {
+		t.Fatal("registry packages must publish through repository-bound trusted publishing")
 	}
 	for _, required := range []string{
-		"HOMEBREW_TAP_TOKEN is required to publish nilstate/homebrew-tap.",
-		"SCOOP_BUCKET_TOKEN is required to publish nilstate/scoop-bucket.",
+		"HOMEBREW_TAP_TOKEN is required to publish auscaster/homebrew-tap.",
+		"SCOOP_BUCKET_TOKEN is required to publish auscaster/scoop-bucket.",
 	} {
 		if !strings.Contains(text, required) {
 			t.Fatalf("release workflow must fail closed when %q is missing", required)
@@ -528,7 +528,7 @@ func TestRegistryTemplatesPointAtPrimaryReleaseAssets(t *testing.T) {
 			t.Fatal(err)
 		}
 		text := string(data)
-		if !strings.Contains(text, "github.com/nilstate/scafld/releases/download/v{{VERSION}}") {
+		if !strings.Contains(text, "github.com/auscaster/scafld/releases/download/v{{VERSION}}") {
 			t.Fatalf("%s does not use primary release assets", file)
 		}
 	}

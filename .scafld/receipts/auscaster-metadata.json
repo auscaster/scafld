@@ -1,0 +1,181 @@
+{
+  "body": {
+    "schema_version": 1,
+    "task_id": "auscaster-metadata",
+    "session_id": "auscaster-metadata",
+    "verdict": "pass",
+    "snapshot_mode": "base_delta",
+    "base_ref": "d52fbe53b1ecade0f6f4216d83d8496551f37f0c",
+    "base_commit": "d52fbe53b1ecade0f6f4216d83d8496551f37f0c",
+    "head_commit": "d52fbe53b1ecade0f6f4216d83d8496551f37f0c",
+    "scope": [
+      ".github/workflows/release.yml",
+      "README.md",
+      "docs/sourcey.config.ts",
+      "install.sh",
+      "package/docker",
+      "package/homebrew",
+      "package/npm/lib/platform.js",
+      "package/pypi/src/scafld_launcher/install.py",
+      "package/scoop",
+      "package/winget",
+      "scripts/audit-scafld-metadata.sh",
+      "scripts/build-release-artifacts.sh",
+      "test/release/packaging_test.go"
+    ],
+    "tree_sha": "70ba3fa5bca29c167f5da4f28ccba60a4ca6d6b0",
+    "file_digests": {
+      ".github/workflows/release.yml": "0370e194a2ef1d190c6ef7ad9f92ea08cc3e05ffda7a46b113065bcf08d18d8b",
+      "README.md": "b85e2c24e33991b5e7aa43ba5c853382731730161981c447037520a7a3629fa4",
+      "docs/sourcey.config.ts": "f774cd7f1fdeba7fa0c47d034370f5f5508439dd94723cd4b8f5b5036dc9a3b2",
+      "install.sh": "706820619e91aa17a63b6742791b2b8b7cf2d2ea6fbdb67c40076d2ee96442dd",
+      "package/docker/Dockerfile": "369a9572a3a0d30897e337e254003a3a6a8f8c42b0b5834e456fed7766bd49d6",
+      "package/docker/README.md": "eb89fa8d8628aa88e79dadb0f7a9042305a6b2a7902df7b2d11090b8ba8ec077",
+      "package/homebrew/scafld.rb.tmpl": "fa149a4f1be9533affb10217046911ea853c6374d50bb7a4820452807a92cfd1",
+      "package/npm/lib/platform.js": "1e2a1f0263cfe0a2f6b620da7161915b1a616dfaf083980aabcc5240df3422b9",
+      "package/pypi/src/scafld_launcher/install.py": "9f0bac15398d2aca7419bdbea0a8e0dbfd588cb19b8b0ab3801529c4a0047ae0",
+      "package/scoop/scafld.json.tmpl": "a081f2fbee634c4ba28b2621bee7980e63cba90e4eff79bcda5aea411784d6e5",
+      "package/winget/scafld.installer.yaml.tmpl": "eb9a5aac6eb301c7326201b7277a196ad1a12f65c72d638836bfc5301bdfd99c",
+      "package/winget/scafld.version.yaml.tmpl": "806e3a28c4c87793c959d9fdd4deb3e1aaa2a2168f3e369d8300c8b0c095d26b",
+      "package/winget/scafld.yaml.tmpl": "c8ee519426224a40a7eef7dd6b9c505ce4971d76a62d268a26ed1d81d0eb9109",
+      "scripts/audit-scafld-metadata.sh": "48fa939074c0664f4afac6df2c93ef44798eb82cf0ca4d745b84ced4e91b0732",
+      "scripts/build-release-artifacts.sh": "a3e23d5b4a298f5f1449a328fdb34ed9b636542802b0ed654127407c3d5d3a19",
+      "test/release/packaging_test.go": "8c6cb51423c26dbb19d28f219171f1957b1e5030e559f8f13c69607b1d2bc777"
+    },
+    "ignored_unreviewed": [],
+    "reviewed_context_provenance": [
+      {
+        "kind": "evidence_file",
+        "path": ".github/workflows/release.yml",
+        "sha256": "0370e194a2ef1d190c6ef7ad9f92ea08cc3e05ffda7a46b113065bcf08d18d8b"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "README.md",
+        "sha256": "b85e2c24e33991b5e7aa43ba5c853382731730161981c447037520a7a3629fa4"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "docs/sourcey.config.ts",
+        "sha256": "f774cd7f1fdeba7fa0c47d034370f5f5508439dd94723cd4b8f5b5036dc9a3b2"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "install.sh",
+        "sha256": "706820619e91aa17a63b6742791b2b8b7cf2d2ea6fbdb67c40076d2ee96442dd"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "package/docker/Dockerfile",
+        "sha256": "369a9572a3a0d30897e337e254003a3a6a8f8c42b0b5834e456fed7766bd49d6"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "package/docker/README.md",
+        "sha256": "eb89fa8d8628aa88e79dadb0f7a9042305a6b2a7902df7b2d11090b8ba8ec077"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "package/homebrew/scafld.rb.tmpl",
+        "sha256": "fa149a4f1be9533affb10217046911ea853c6374d50bb7a4820452807a92cfd1"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "package/npm/lib/platform.js",
+        "sha256": "1e2a1f0263cfe0a2f6b620da7161915b1a616dfaf083980aabcc5240df3422b9"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "package/pypi/src/scafld_launcher/install.py",
+        "sha256": "9f0bac15398d2aca7419bdbea0a8e0dbfd588cb19b8b0ab3801529c4a0047ae0"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "package/scoop/scafld.json.tmpl",
+        "sha256": "a081f2fbee634c4ba28b2621bee7980e63cba90e4eff79bcda5aea411784d6e5"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "package/winget/scafld.installer.yaml.tmpl",
+        "sha256": "eb9a5aac6eb301c7326201b7277a196ad1a12f65c72d638836bfc5301bdfd99c"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "package/winget/scafld.version.yaml.tmpl",
+        "sha256": "806e3a28c4c87793c959d9fdd4deb3e1aaa2a2168f3e369d8300c8b0c095d26b"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "package/winget/scafld.yaml.tmpl",
+        "sha256": "c8ee519426224a40a7eef7dd6b9c505ce4971d76a62d268a26ed1d81d0eb9109"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "scripts/audit-scafld-metadata.sh",
+        "sha256": "48fa939074c0664f4afac6df2c93ef44798eb82cf0ca4d745b84ced4e91b0732"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "scripts/build-release-artifacts.sh",
+        "sha256": "a3e23d5b4a298f5f1449a328fdb34ed9b636542802b0ed654127407c3d5d3a19"
+      },
+      {
+        "kind": "evidence_file",
+        "path": "test/release/packaging_test.go",
+        "sha256": "8c6cb51423c26dbb19d28f219171f1957b1e5030e559f8f13c69607b1d2bc777"
+      }
+    ],
+    "reviewer": {
+      "provider": "claude",
+      "model": "claude-opus-5-5"
+    },
+    "host_under_review": {
+      "agent": "codex",
+      "session_id": "auscaster-metadata"
+    },
+    "independence": {
+      "level": "cross_vendor",
+      "distinct": true,
+      "reason": "cross_vendor: reviewer \"claude\" and host \"codex\" are different model vendors; this is multi-model review that reduces correlated blind spots but remains single-party local tooling"
+    },
+    "spec_fingerprint": "3ad3233dc276080c229b41b3c1e002f9f145bff8e564e51cd5f2dc41929c1d21",
+    "acceptance_declared": true,
+    "acceptance": [
+      {
+        "id": "ac1",
+        "command": "make check",
+        "expected_kind": "exit_code_zero",
+        "status": "pass",
+        "reason": "exit code was 0",
+        "output_sha256": "492aa450ed14c030868b30f86d014d5396f32b039d18ca204533f7817d94b050",
+        "diagnostic": "/Users/kam/dev/0state/.worktrees/scafld-auscaster/.scafld/runs/auscaster-metadata/artifacts/commands/ac1-1793251689094871000.txt"
+      }
+    ],
+    "open_blockers": [],
+    "mutation_guard": {
+      "status": "clean",
+      "scope": [
+        ".github/workflows/release.yml",
+        "README.md",
+        "docs/sourcey.config.ts",
+        "install.sh",
+        "package/docker",
+        "package/homebrew",
+        "package/npm/lib/platform.js",
+        "package/pypi/src/scafld_launcher/install.py",
+        "package/scoop",
+        "package/winget",
+        "scripts/audit-scafld-metadata.sh",
+        "scripts/build-release-artifacts.sh",
+        "test/release/packaging_test.go"
+      ]
+    },
+    "ledger_head": "ca5b5cd9afbf1a58486a9d41ec0486461cbcd1175eb3161be8ae367296639235",
+    "minted_at": "2026-10-29T05:28:06Z"
+  },
+  "signature": {
+    "alg": "ed25519",
+    "key_id": "ed25519:RGGe6gUQpsB6KGu0VcnMxGUL5IA1I1VDSKi3ecCzYOU",
+    "sig": "ELXYd8XIc4vuTwWPh0XJitmoseTRWHpVx/PJc0FcuVc8RL10c1yG4SrNN0qC9zzEzcx2kVHkNwPz9aLmKdOKCg=="
+  }
+}

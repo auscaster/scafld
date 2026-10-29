@@ -7,8 +7,8 @@ adapter that installs or points at a GitHub release asset.
 
 - `npm/` publishes the `scafld` npm package.
 - `pypi/` publishes the `scafld` PyPI package.
-- `homebrew/` renders and publishes the `nilstate/homebrew-tap` formula.
-- `scoop/` renders and publishes the `nilstate/scoop-bucket` manifest.
+- `homebrew/` renders and publishes the `auscaster/homebrew-tap` formula.
+- `scoop/` renders and publishes the `auscaster/scoop-bucket` manifest.
 - `docker/` publishes the GHCR OCI image.
 
 ## Registry templates

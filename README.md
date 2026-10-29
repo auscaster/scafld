@@ -1,9 +1,9 @@
 # scafld
 
-[![CI](https://github.com/nilstate/scafld/actions/workflows/ci.yml/badge.svg)](https://github.com/nilstate/scafld/actions/workflows/ci.yml)
-[![Go](https://img.shields.io/github/go-mod/go-version/nilstate/scafld?label=go)](go.mod)
+[![CI](https://github.com/auscaster/scafld/actions/workflows/ci.yml/badge.svg)](https://github.com/auscaster/scafld/actions/workflows/ci.yml)
+[![Go](https://img.shields.io/github/go-mod/go-version/auscaster/scafld?label=go)](go.mod)
 [![Go Reference](https://pkg.go.dev/badge/github.com/nilstate/scafld/v2.svg)](https://pkg.go.dev/github.com/nilstate/scafld/v2)
-[![License](https://img.shields.io/github/license/nilstate/scafld)](LICENSE)
+[![License](https://img.shields.io/github/license/auscaster/scafld)](LICENSE)
 
 **A deterministic protocol for multi-phase agent work.**
 The agent passes through. The protocol stays.
@@ -29,7 +29,7 @@ ed25519-signed receipt your CI can re-verify. The differentiator is simple:
 Installer script:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nilstate/scafld/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/auscaster/scafld/main/install.sh | sh
 ```
 
 Go:
@@ -41,7 +41,7 @@ go install github.com/nilstate/scafld/v2/cmd/scafld@latest
 Homebrew:
 
 ```bash
-brew install nilstate/tap/scafld
+brew install auscaster/tap/scafld
 ```
 
 npm:
@@ -59,7 +59,7 @@ pipx install scafld
 Scoop:
 
 ```powershell
-scoop bucket add nilstate https://github.com/nilstate/scoop-bucket
+scoop bucket add auscaster https://github.com/auscaster/scoop-bucket
 scoop install scafld
 ```
 

@@ -30,7 +30,7 @@ if [[ -z "$checksums_file" ]]; then
     tmp_dir="$(mktemp -d)"
     checksums_file="$tmp_dir/checksums.txt"
     curl -fsSL \
-      "https://github.com/nilstate/scafld/releases/download/v${version}/checksums.txt" \
+      "https://github.com/auscaster/scafld/releases/download/v${version}/checksums.txt" \
       -o "$checksums_file"
   fi
 fi

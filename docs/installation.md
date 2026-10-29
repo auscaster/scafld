@@ -18,7 +18,7 @@ description: Install and configure scafld
 Install the latest GitHub release binary:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/nilstate/scafld/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/auscaster/scafld/main/install.sh | sh
 ```
 
 Install with Go:
@@ -30,7 +30,7 @@ go install github.com/nilstate/scafld/v2/cmd/scafld@latest
 Install with Homebrew:
 
 ```bash
-brew install nilstate/tap/scafld
+brew install auscaster/tap/scafld
 ```
 
 Install from npm:
@@ -48,7 +48,7 @@ pipx install scafld
 Install from Scoop:
 
 ```powershell
-scoop bucket add nilstate https://github.com/nilstate/scoop-bucket
+scoop bucket add auscaster https://github.com/auscaster/scoop-bucket
 scoop install scafld
 ```
 
