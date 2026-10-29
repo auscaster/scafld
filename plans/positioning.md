@@ -170,7 +170,7 @@ practice. scafld belongs in those conversations.
 
 - **Not a roadmap.** Engineering sequencing lives in scafld's other plans
   (currently [llm-performance-cutover.md](llm-performance-cutover.md)).
-- **Not a marketing plan.** Concrete campaign work belongs in 0state's
+- **Not a marketing plan.** Concrete campaign work belongs in auscaster's
   [outreach.md](../../0state/.plans/outreach.md) once scafld is pulled
   into that engine's target list.
 - **Not a vertical pitch.** If vertical positioning becomes needed later

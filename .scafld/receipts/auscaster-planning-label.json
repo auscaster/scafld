@@ -1,0 +1,67 @@
+{
+  "body": {
+    "schema_version": 1,
+    "task_id": "auscaster-planning-label",
+    "session_id": "auscaster-planning-label",
+    "verdict": "pass",
+    "snapshot_mode": "base_delta",
+    "base_ref": "origin/main",
+    "base_commit": "29aee9989332165dcc4466213a3115bf73eea496",
+    "head_commit": "b7dfe8898bae1f8a8e71bff1bfc6b24c9bdc29e2",
+    "scope": [
+      "plans/positioning.md"
+    ],
+    "tree_sha": "5b28a638fb2d2dcb890a94e3ea6403f49ab307f2",
+    "file_digests": {
+      "plans/positioning.md": "86fee063e6954369f4442f8d503ff23281af57c6d957893bc57b17654e7e21f1"
+    },
+    "ignored_unreviewed": [],
+    "reviewed_context_provenance": [
+      {
+        "kind": "evidence_file",
+        "path": "plans/positioning.md",
+        "sha256": "86fee063e6954369f4442f8d503ff23281af57c6d957893bc57b17654e7e21f1"
+      }
+    ],
+    "reviewer": {
+      "provider": "claude",
+      "model": "claude-opus-5-5"
+    },
+    "host_under_review": {
+      "agent": "codex",
+      "session_id": "auscaster-planning-label"
+    },
+    "independence": {
+      "level": "cross_vendor",
+      "distinct": true,
+      "reason": "cross_vendor: reviewer \"claude\" and host \"codex\" are different model vendors; this is multi-model review that reduces correlated blind spots but remains single-party local tooling"
+    },
+    "spec_fingerprint": "2680538efee9d3aef7d6393c346d1932efefc503072c74e812157fe3cbbc6f8c",
+    "acceptance_declared": true,
+    "acceptance": [
+      {
+        "id": "ac1",
+        "expected_kind": "manual",
+        "status": "pass",
+        "reason": "Reviewed the actual origin/main comparison: one documentation owner label changed; the local plan link and runtime/version files are unchanged.",
+        "evidence_sha256": "abbb662f60cf6630b92e918e94d49cc7a6f91b55a0d7e8cf71c074ad2c6b1b54",
+        "evidence_actor": "agent",
+        "evidence_recorded_at": "2026-10-29T11:36:18Z"
+      }
+    ],
+    "open_blockers": [],
+    "mutation_guard": {
+      "status": "clean",
+      "scope": [
+        "plans/positioning.md"
+      ]
+    },
+    "ledger_head": "b24131d06684ab8eecf37c2183ce8b127ac7e4a5314066471d8b72f5e8f3be3c",
+    "minted_at": "2026-10-29T11:39:50Z"
+  },
+  "signature": {
+    "alg": "ed25519",
+    "key_id": "ed25519:RGGe6gUQpsB6KGu0VcnMxGUL5IA1I1VDSKi3ecCzYOU",
+    "sig": "Qwy5Q8ZyYwu5EYz1N76/30A/GoEU/GL4wEbj6cSP6YywtevXndd/NNZu6cHMwJNVyZERj4fBl4ZAthI/cDuHAA=="
+  }
+}
