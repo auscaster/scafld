@@ -1,0 +1,67 @@
+{
+  "body": {
+    "schema_version": 1,
+    "task_id": "auscaster-planning-owner",
+    "session_id": "auscaster-planning-owner",
+    "verdict": "pass",
+    "snapshot_mode": "base_delta",
+    "base_ref": "075cf53f232c2d4974c9fd0d461b0598dd4aadd1",
+    "base_commit": "075cf53f232c2d4974c9fd0d461b0598dd4aadd1",
+    "head_commit": "075cf53f232c2d4974c9fd0d461b0598dd4aadd1",
+    "scope": [
+      "plans/positioning.md"
+    ],
+    "tree_sha": "5b28a638fb2d2dcb890a94e3ea6403f49ab307f2",
+    "file_digests": {
+      "plans/positioning.md": "86fee063e6954369f4442f8d503ff23281af57c6d957893bc57b17654e7e21f1"
+    },
+    "ignored_unreviewed": [],
+    "reviewed_context_provenance": [
+      {
+        "kind": "evidence_file",
+        "path": "plans/positioning.md",
+        "sha256": "86fee063e6954369f4442f8d503ff23281af57c6d957893bc57b17654e7e21f1"
+      }
+    ],
+    "reviewer": {
+      "provider": "claude",
+      "model": "claude-opus-5-5"
+    },
+    "host_under_review": {
+      "agent": "codex",
+      "session_id": "auscaster-planning-owner"
+    },
+    "independence": {
+      "level": "cross_vendor",
+      "distinct": true,
+      "reason": "cross_vendor: reviewer \"claude\" and host \"codex\" are different model vendors; this is multi-model review that reduces correlated blind spots but remains single-party local tooling"
+    },
+    "spec_fingerprint": "e8fee50047defcf6886c75398afc8c38cb36611f6e0dd8d6d80698d960c1dbb2",
+    "acceptance_declared": true,
+    "acceptance": [
+      {
+        "id": "ac1",
+        "expected_kind": "manual",
+        "status": "pass",
+        "reason": "Read the actual one-word documentation diff: the owner label is auscaster and the existing ../../0state/.plans/outreach.md path is unchanged; no runtime or version file changed.",
+        "evidence_sha256": "914c8872f6dee40e5f79c0b07f2f00c197342203a01a7d52f9f7efac777f552c",
+        "evidence_actor": "agent",
+        "evidence_recorded_at": "2026-10-29T11:29:24Z"
+      }
+    ],
+    "open_blockers": [],
+    "mutation_guard": {
+      "status": "clean",
+      "scope": [
+        "plans/positioning.md"
+      ]
+    },
+    "ledger_head": "2404b0efac60e1f111857028f006220c01ffb04d310c1af79e5dde1e35ed1cbb",
+    "minted_at": "2026-10-29T11:31:04Z"
+  },
+  "signature": {
+    "alg": "ed25519",
+    "key_id": "ed25519:RGGe6gUQpsB6KGu0VcnMxGUL5IA1I1VDSKi3ecCzYOU",
+    "sig": "HZmA7Dyqe+WR5RGQkxbIKcyicTHezGQVDsd4gxJ0lWcIKUx9+DbnClTjYFk4TVyBG2XFLPefRb0KmbxVsZ6OBg=="
+  }
+}
