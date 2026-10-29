@@ -2,10 +2,10 @@ import { defineConfig, godoc, markdown } from "sourcey";
 
 export default defineConfig({
   name: "scafld",
-  siteUrl: "https://0state.com",
+  siteUrl: "https://auscaster.com",
   baseUrl: "/scafld/docs",
   prettyUrls: "strip",
-  repo: "https://github.com/nilstate/scafld",
+  repo: "https://github.com/auscaster/scafld",
   editBranch: "main",
   editBasePath: "docs",
   theme: {
@@ -68,6 +68,6 @@ export default defineConfig({
     ],
   },
   navbar: {
-    links: [{ type: "github", href: "https://github.com/nilstate/scafld" }],
+    links: [{ type: "github", href: "https://github.com/auscaster/scafld" }],
   },
 });
