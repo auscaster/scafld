@@ -48,14 +48,14 @@ def asset_name(version: str) -> str:
 def download_url(version: str) -> str:
     if base := os.environ.get("SCAFLD_INSTALL_BASE_URL"):
         return f"{base.rstrip('/')}/{asset_name(version)}"
-    repo = os.environ.get("SCAFLD_GITHUB_REPOSITORY", "nilstate/scafld")
+    repo = os.environ.get("SCAFLD_GITHUB_REPOSITORY", "auscaster/scafld")
     return f"https://github.com/{repo}/releases/download/v{version}/{asset_name(version)}"
 
 
 def checksums_url(version: str) -> str:
     if base := os.environ.get("SCAFLD_INSTALL_BASE_URL"):
         return f"{base.rstrip('/')}/checksums.txt"
-    repo = os.environ.get("SCAFLD_GITHUB_REPOSITORY", "nilstate/scafld")
+    repo = os.environ.get("SCAFLD_GITHUB_REPOSITORY", "auscaster/scafld")
     return f"https://github.com/{repo}/releases/download/v{version}/checksums.txt"
 
 

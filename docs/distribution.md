@@ -8,10 +8,10 @@ and verify the matching GitHub release asset.
 
 - Go modules: `go install github.com/nilstate/scafld/v2/cmd/scafld@latest`
 - GitHub Releases: raw platform binaries plus `checksums.txt` and `manifest.json`
-- Homebrew: `brew install nilstate/tap/scafld`
+- Homebrew: `brew install auscaster/tap/scafld`
 - npm: `npm install -g scafld`
 - PyPI: `pipx install scafld`
-- Scoop: `scoop bucket add nilstate https://github.com/nilstate/scoop-bucket`
+- Scoop: `scoop bucket add auscaster https://github.com/auscaster/scoop-bucket`
   then `scoop install scafld`
 
 ## Secondary channels
@@ -28,7 +28,7 @@ and Scoop render into owned registry repositories; WinGet requires upstream
 review in `microsoft/winget-pkgs`.
 
 The OCI image must be publicly inspectable after release. Verify it with
-`docker manifest inspect ghcr.io/nilstate/scafld:vX.Y.Z`; a `denied` response
+`docker manifest inspect ghcr.io/auscaster/scafld:vX.Y.Z`; a `denied` response
 means the GitHub Packages visibility still needs to be made public.
 
 WinGet submissions should be staged with
@@ -39,7 +39,7 @@ into the WinGet checkout.
 
 ## Release Contract
 
-1. A tag `vX.Y.Z` is pushed in `github.com/nilstate/scafld`.
+1. A tag `vX.Y.Z` is pushed in `github.com/auscaster/scafld`.
 2. CI runs `make check`.
 3. `scripts/build-release-artifacts.sh X.Y.Z` builds raw native binaries for
    Linux, macOS, and Windows on amd64/arm64.

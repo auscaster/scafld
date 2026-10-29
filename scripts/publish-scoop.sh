@@ -3,7 +3,7 @@ set -euo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 rendered="${RENDERED_DIR:-$root/.stage/package-managers/rendered}"
-bucket="${SCOOP_BUCKET_DIR:?Set SCOOP_BUCKET_DIR to a checked-out nilstate/scoop-bucket repository}"
+bucket="${SCOOP_BUCKET_DIR:?Set SCOOP_BUCKET_DIR to a checked-out auscaster/scoop-bucket repository}"
 src="$rendered/scoop/scafld.json"
 dst="$bucket/bucket/scafld.json"
 

@@ -43,7 +43,7 @@ function binaryPath() {
 }
 
 function repo() {
-  return process.env.SCAFLD_GITHUB_REPOSITORY || "nilstate/scafld";
+  return process.env.SCAFLD_GITHUB_REPOSITORY || "auscaster/scafld";
 }
 
 function downloadURL() {

@@ -61,6 +61,6 @@ Environment overrides:
 
 ## Links
 
-- Docs: <https://0state.com/scafld/docs>
-- Source: <https://github.com/nilstate/scafld>
-- Releases: <https://github.com/nilstate/scafld/releases>
+- Docs: <https://auscaster.com/scafld/docs>
+- Source: <https://github.com/auscaster/scafld>
+- Releases: <https://github.com/auscaster/scafld/releases>

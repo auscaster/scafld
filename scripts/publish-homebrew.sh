@@ -3,7 +3,7 @@ set -euo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 rendered="${RENDERED_DIR:-$root/.stage/package-managers/rendered}"
-tap="${TAP_REPO_DIR:?Set TAP_REPO_DIR to a checked-out nilstate/homebrew-tap repository}"
+tap="${TAP_REPO_DIR:?Set TAP_REPO_DIR to a checked-out auscaster/homebrew-tap repository}"
 src="$rendered/homebrew/scafld.rb"
 dst="$tap/Formula/scafld.rb"
 

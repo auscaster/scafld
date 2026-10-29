@@ -88,6 +88,7 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
+      id-token: write # PyPI trusted publishing
 
     steps:
       - name: Check out repository
@@ -111,7 +112,6 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: package/pypi/dist
-          password: ${{ secrets.PYPI_API_TOKEN }}
           skip-existing: true
 
   publish-npm:
@@ -186,7 +186,7 @@ jobs:
           HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
         run: |
           if [[ -z "${HOMEBREW_TAP_TOKEN:-}" ]]; then
-            echo "HOMEBREW_TAP_TOKEN is required to publish nilstate/homebrew-tap." >&2
+            echo "HOMEBREW_TAP_TOKEN is required to publish auscaster/homebrew-tap." >&2
             exit 1
           fi
 
@@ -202,7 +202,7 @@ jobs:
       - name: Check out Homebrew tap
         uses: actions/checkout@v7
         with:
-          repository: nilstate/homebrew-tap
+          repository: auscaster/homebrew-tap
           token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
           path: .stage/homebrew-tap
 
@@ -234,7 +234,7 @@ jobs:
           SCOOP_BUCKET_TOKEN: ${{ secrets.SCOOP_BUCKET_TOKEN }}
         run: |
           if [[ -z "${SCOOP_BUCKET_TOKEN:-}" ]]; then
-            echo "SCOOP_BUCKET_TOKEN is required to publish nilstate/scoop-bucket." >&2
+            echo "SCOOP_BUCKET_TOKEN is required to publish auscaster/scoop-bucket." >&2
             exit 1
           fi
 
@@ -250,7 +250,7 @@ jobs:
       - name: Check out Scoop bucket
         uses: actions/checkout@v7
         with:
-          repository: nilstate/scoop-bucket
+          repository: auscaster/scoop-bucket
           token: ${{ secrets.SCOOP_BUCKET_TOKEN }}
           path: .stage/scoop-bucket
 
@@ -305,5 +305,5 @@ jobs:
           build-args: |
             VERSION=${{ steps.version.outputs.version }}
           tags: |
-            ghcr.io/nilstate/scafld:v${{ steps.version.outputs.version }}
-            ghcr.io/nilstate/scafld:latest
+            ghcr.io/auscaster/scafld:v${{ steps.version.outputs.version }}
+            ghcr.io/auscaster/scafld:latest

@@ -26,7 +26,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-base_url="https://github.com/nilstate/scafld/releases/download/v${version}"
+base_url="https://github.com/auscaster/scafld/releases/download/v${version}"
 rendered_archive="$tmp_dir/package-managers-rendered.tar.gz"
 checksums_file="$tmp_dir/checksums.txt"
 

@@ -60,7 +60,7 @@ generate_windows_resources() {
         },
         "info": {
           "0409": {
-            "CompanyName": "0state",
+            "CompanyName": "auscaster",
             "FileDescription": "scafld CLI",
             "FileVersion": "$version",
             "InternalName": "scafld",
@@ -123,7 +123,7 @@ done
 {
   printf '{\n'
   printf '  "version": "%s",\n' "$version"
-  printf '  "repository": "github.com/nilstate/scafld",\n'
+  printf '  "repository": "github.com/auscaster/scafld",\n'
   printf '  "assets": [\n'
   first=1
   while read -r sum file; do
