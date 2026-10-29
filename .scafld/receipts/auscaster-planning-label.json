@@ -1,13 +1,13 @@
 {
   "body": {
     "schema_version": 1,
-    "task_id": "auscaster-planning-owner",
-    "session_id": "auscaster-planning-owner",
+    "task_id": "auscaster-planning-label",
+    "session_id": "auscaster-planning-label",
     "verdict": "pass",
     "snapshot_mode": "base_delta",
-    "base_ref": "075cf53f232c2d4974c9fd0d461b0598dd4aadd1",
-    "base_commit": "075cf53f232c2d4974c9fd0d461b0598dd4aadd1",
-    "head_commit": "075cf53f232c2d4974c9fd0d461b0598dd4aadd1",
+    "base_ref": "origin/main",
+    "base_commit": "29aee9989332165dcc4466213a3115bf73eea496",
+    "head_commit": "b7dfe8898bae1f8a8e71bff1bfc6b24c9bdc29e2",
     "scope": [
       "plans/positioning.md"
     ],
@@ -29,24 +29,24 @@
     },
     "host_under_review": {
       "agent": "codex",
-      "session_id": "auscaster-planning-owner"
+      "session_id": "auscaster-planning-label"
     },
     "independence": {
       "level": "cross_vendor",
       "distinct": true,
       "reason": "cross_vendor: reviewer \"claude\" and host \"codex\" are different model vendors; this is multi-model review that reduces correlated blind spots but remains single-party local tooling"
     },
-    "spec_fingerprint": "e8fee50047defcf6886c75398afc8c38cb36611f6e0dd8d6d80698d960c1dbb2",
+    "spec_fingerprint": "2680538efee9d3aef7d6393c346d1932efefc503072c74e812157fe3cbbc6f8c",
     "acceptance_declared": true,
     "acceptance": [
       {
         "id": "ac1",
         "expected_kind": "manual",
         "status": "pass",
-        "reason": "Read the actual one-word documentation diff: the owner label is auscaster and the existing ../../0state/.plans/outreach.md path is unchanged; no runtime or version file changed.",
-        "evidence_sha256": "914c8872f6dee40e5f79c0b07f2f00c197342203a01a7d52f9f7efac777f552c",
+        "reason": "Reviewed the actual origin/main comparison: one documentation owner label changed; the local plan link and runtime/version files are unchanged.",
+        "evidence_sha256": "abbb662f60cf6630b92e918e94d49cc7a6f91b55a0d7e8cf71c074ad2c6b1b54",
         "evidence_actor": "agent",
-        "evidence_recorded_at": "2026-10-29T11:29:24Z"
+        "evidence_recorded_at": "2026-10-29T11:36:18Z"
       }
     ],
     "open_blockers": [],
@@ -56,12 +56,12 @@
         "plans/positioning.md"
       ]
     },
-    "ledger_head": "2404b0efac60e1f111857028f006220c01ffb04d310c1af79e5dde1e35ed1cbb",
-    "minted_at": "2026-10-29T11:31:04Z"
+    "ledger_head": "b24131d06684ab8eecf37c2183ce8b127ac7e4a5314066471d8b72f5e8f3be3c",
+    "minted_at": "2026-10-29T11:39:50Z"
   },
   "signature": {
     "alg": "ed25519",
     "key_id": "ed25519:RGGe6gUQpsB6KGu0VcnMxGUL5IA1I1VDSKi3ecCzYOU",
-    "sig": "HZmA7Dyqe+WR5RGQkxbIKcyicTHezGQVDsd4gxJ0lWcIKUx9+DbnClTjYFk4TVyBG2XFLPefRb0KmbxVsZ6OBg=="
+    "sig": "Qwy5Q8ZyYwu5EYz1N76/30A/GoEU/GL4wEbj6cSP6YywtevXndd/NNZu6cHMwJNVyZERj4fBl4ZAthI/cDuHAA=="
   }
 }
