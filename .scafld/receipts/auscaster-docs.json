@@ -1,0 +1,67 @@
+{
+  "body": {
+    "schema_version": 1,
+    "task_id": "auscaster-docs",
+    "session_id": "auscaster-docs",
+    "verdict": "pass",
+    "snapshot_mode": "base_delta",
+    "base_ref": "d32d6319c2105248a0d69eda10b4f1bce25c00a5",
+    "base_commit": "d32d6319c2105248a0d69eda10b4f1bce25c00a5",
+    "head_commit": "d32d6319c2105248a0d69eda10b4f1bce25c00a5",
+    "scope": [
+      "docs/sourcey.config.ts"
+    ],
+    "tree_sha": "33723d9eeb8251a151f6dff3f011bd7310e0ffad",
+    "file_digests": {
+      "docs/sourcey.config.ts": "f774cd7f1fdeba7fa0c47d034370f5f5508439dd94723cd4b8f5b5036dc9a3b2"
+    },
+    "ignored_unreviewed": [],
+    "reviewed_context_provenance": [
+      {
+        "kind": "evidence_file",
+        "path": "docs/sourcey.config.ts",
+        "sha256": "f774cd7f1fdeba7fa0c47d034370f5f5508439dd94723cd4b8f5b5036dc9a3b2"
+      }
+    ],
+    "reviewer": {
+      "provider": "claude",
+      "model": "claude-opus-5-5"
+    },
+    "host_under_review": {
+      "agent": "codex",
+      "session_id": "auscaster-docs"
+    },
+    "independence": {
+      "level": "cross_vendor",
+      "distinct": true,
+      "reason": "cross_vendor: reviewer \"claude\" and host \"codex\" are different model vendors; this is multi-model review that reduces correlated blind spots but remains single-party local tooling"
+    },
+    "spec_fingerprint": "b72c3ab71a50c9f363b0bb66bab7bb5cdb3df0f927e574c192f8d3a49bac07c4",
+    "acceptance_declared": true,
+    "acceptance": [
+      {
+        "id": "docs-build",
+        "command": "cd docs \u0026\u0026 npm ci \u0026\u0026 npm run site:build",
+        "expected_kind": "exit_code_zero",
+        "status": "pass",
+        "reason": "exit code was 0",
+        "output_sha256": "f36a7c7d516f3e3bb59a8eb356708319693a5b62f32ae5b62e13630202542bc2",
+        "diagnostic": "/Users/kam/dev/0state/.worktrees/scafld-auscaster-docs/.scafld/runs/auscaster-docs/artifacts/commands/docs-build-1793239227152288000.txt"
+      }
+    ],
+    "open_blockers": [],
+    "mutation_guard": {
+      "status": "clean",
+      "scope": [
+        "docs/sourcey.config.ts"
+      ]
+    },
+    "ledger_head": "30acf8ed03615f17e4862632cc00e154073ba0093e464910a7995fad17819002",
+    "minted_at": "2026-10-29T02:00:19Z"
+  },
+  "signature": {
+    "alg": "ed25519",
+    "key_id": "ed25519:RGGe6gUQpsB6KGu0VcnMxGUL5IA1I1VDSKi3ecCzYOU",
+    "sig": "nrwcdkOL+R58qRXroB0ZypDqzVJgoAVc0XdDSby3nHgDb3p6Nvocx+/ZdWUz/aWC702pxzc/tF5eJfAJreJhBg=="
+  }
+}
