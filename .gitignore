@@ -31,21 +31,23 @@ Thumbs.db
 .runx/
 
 # scafld runtime state
-# Keep project-owned specs/config/prompts in git; ignore generated core and local runtime state.
+# Keep project-owned config, trusted keys and live specs in git. Generated
+# copies (core, prompts, the spec archive and examples) and local runtime state
+# stay out, as the repository tests require.
 !.scafld/
 !.scafld/config.yaml
-!.scafld/prompts/
-!.scafld/prompts/**
 !.scafld/specs/
 !.scafld/specs/**
 !.scafld/trusted-keys.json
 .scafld/receipts/
 .scafld/config.local.yaml
 .scafld/core/
+.scafld/prompts/
+.scafld/specs/archive/
+.scafld/specs/examples/
 .scafld/locks/
 .scafld/keys/
 .scafld/private-keys/
 .scafld/**/*.key
 .scafld/**/*.pem
-.scafld/prompts/.manifest.json
 .scafld/runs/
