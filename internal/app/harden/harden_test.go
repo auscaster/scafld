@@ -288,6 +288,34 @@ func TestRunMarkPassedRejectsUnknownSpecGapAnchor(t *testing.T) {
 	}
 }
 
+func TestSpecGapCitationNamesAPhaseSection(t *testing.T) {
+	t.Parallel()
+
+	model := fixtureModel()
+	model.Phases = []spec.Phase{{
+		ID:         "phase1",
+		Number:     1,
+		Name:       "Bound clock reads",
+		Acceptance: []spec.Criterion{{ID: "ac1", Title: "Worker tests pass"}},
+	}}
+	for anchor, known := range map[string]bool{
+		"spec_gap:Phase 1":                     true,
+		"spec_gap:Phase 1 Acceptance":          true,
+		"spec_gap:Phase 1 Acceptance (ac1)":    true,
+		"spec_gap:Phase 1 ac1":                 true,
+		"spec_gap:Phase 1 Changes":             true,
+		"spec_gap:Bound clock reads Objective": true,
+		"spec_gap:Phase 1 Acceptance (ac2)":    false,
+		"spec_gap:Phase 2 Acceptance":          false,
+		"spec_gap:Phase 1 Whatever":            false,
+	} {
+		warnings := verifySpecGapCitation(model, "observation", anchor)
+		if known != (len(warnings) == 0) {
+			t.Errorf("%s: warnings = %+v, want known %v", anchor, warnings, known)
+		}
+	}
+}
+
 func TestRunMarkPassedRejectsMissingObservations(t *testing.T) {
 	t.Parallel()
 

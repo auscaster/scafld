@@ -928,6 +928,9 @@ func validSpecGapField(model spec.Model, field string) bool {
 		if key == normalizeSpecGapField(phase.ID) || key == normalizeSpecGapField(phase.Name) {
 			return true
 		}
+		if validPhaseSpecGapField(phase, key) {
+			return true
+		}
 	}
 	for _, criterion := range model.Acceptance.Criteria {
 		if key == normalizeSpecGapField(criterion.ID) || key == normalizeSpecGapField(criterion.Title) {
@@ -937,6 +940,38 @@ func validSpecGapField(model spec.Model, field string) bool {
 	for _, phase := range model.Phases {
 		for _, criterion := range phase.Acceptance {
 			if key == normalizeSpecGapField(criterion.ID) || key == normalizeSpecGapField(criterion.Title) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// validPhaseSpecGapField reports whether key names a section of phase, as
+// "Phase 1 Acceptance", optionally narrowed to one of the phase's criteria,
+// as "Phase 1 Acceptance (ac1)" or "Phase 1 ac1".
+func validPhaseSpecGapField(phase spec.Phase, key string) bool {
+	for _, name := range []string{phase.ID, phase.Name} {
+		prefix := normalizeSpecGapField(name)
+		if prefix == "" {
+			continue
+		}
+		rest, ok := strings.CutPrefix(key, prefix)
+		if !ok || rest == "" {
+			continue
+		}
+		section := rest
+		for _, candidate := range []string{"acceptance", "changes", "dependencies", "objective", "status"} {
+			if trimmed, cut := strings.CutPrefix(rest, candidate); cut {
+				if trimmed == "" {
+					return true
+				}
+				section = trimmed
+				break
+			}
+		}
+		for _, criterion := range phase.Acceptance {
+			if section == normalizeSpecGapField(criterion.ID) || section == normalizeSpecGapField(criterion.Title) {
 				return true
 			}
 		}
