@@ -240,7 +240,11 @@ func RunWithInput(ctx context.Context, specs SpecStore, sessions SessionStore, w
 			return Output{}, stageErr
 		}
 	}
-	postReviewCtx, cancelPostReview := context.WithTimeout(context.WithoutCancel(ctx), 15*time.Second)
+	// Both the workspace snapshot and scoped material seal run after the
+	// provider returns. Give their combined repository scan its own bounded
+	// deadline; the old 15 seconds expired before the second scan on projects
+	// with large checked-out submodules, discarding a valid external dossier.
+	postReviewCtx, cancelPostReview := context.WithTimeout(context.WithoutCancel(ctx), 10*time.Minute)
 	defer cancelPostReview()
 	afterFull, mutationErr := workspaceSnapshot(postReviewCtx, workspace)
 	if mutationErr != nil {
